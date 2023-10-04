@@ -22,7 +22,7 @@ struct ContentView: View {
                         .font(.system(size: 52))
                         .foregroundColor(.white)
                         
-                }.padding()
+                }
                 
                 // Buttons
                 
