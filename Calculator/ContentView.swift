@@ -27,6 +27,17 @@ enum CalcButton: String {
     case decimal = "."
     case percent = "%"
     case negative = "-/+"
+    
+    var buttonColor: Color {
+        switch self {
+        case .add, .subtract, .multiply, .divide, .equal:
+            return .orange
+        case .clear, .negative, .percent:
+            return Color(.lightGray)
+        default:
+            return Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
+        }
+    }
 }
 
 struct ContentView: View {
@@ -47,6 +58,7 @@ struct ContentView: View {
             Color.black.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             VStack{
+                Spacer()
                 // Text Display
                 HStack{
                     Spacer()
@@ -59,7 +71,7 @@ struct ContentView: View {
                 
                 // Buttons
                 ForEach(buttons, id: \.self) { row in
-                    HStack{
+                    HStack(spacing: 12){
                         ForEach(row, id: \.self) { item in
                             Button(action: {
                                 
@@ -67,17 +79,27 @@ struct ContentView: View {
                             }, label: {
                                 Text(item.rawValue)
                                     .font(.system(size: 32))
-                                    .frame(width: 70, height: 70)
-                                    .background(Color.orange)
+                                    .frame(width: self.buttonWidth(item: item),
+                                           height: self.buttonHeight())
+                                    .background(item.buttonColor)
                                     .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .cornerRadius(self.buttonWidth(item: item) / 2)
                             })}
                     }
                 }
+                .padding(.bottom, 3)
                 
                 
             }
         }
+    }
+    
+    func buttonWidth(item: CalcButton) -> CGFloat {
+        return (UIScreen.main.bounds.width - (5*12)) / 4
+    }
+    
+    func buttonHeight() -> CGFloat {
+        return (UIScreen.main.bounds.width - (5*12)) / 4
     }
     
     
